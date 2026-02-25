@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "resume-intelligence-platform"
+version = "0.1.0"
+description = "Enterprise AI Resume Intelligence Platform with semantic matching, explainability, and MLOps."
+authors = [
+    { name = "Shashank Singh" }
+]
+readme = "README.md"
+requires-python = "==3.11.*"
+dependencies = [
+    "fastapi==0.110.0",
+    "uvicorn[standard]==0.27.1",
+    "pydantic==2.6.1",
+    "pydantic-settings==2.2.1",
+    "python-dotenv==1.0.1",
+    "loguru==0.7.2",
+    "sqlalchemy==2.0.27",
+    "psycopg2-binary==2.9.9",
+    "spacy==3.7.4",
+    "sentence-transformers==2.6.1",
+    "scikit-learn==1.4.1.post1",
+    "xgboost==2.0.3",
+    "lightgbm==4.3.0",
+    "shap==0.44.1",
+    "lime==0.2.0.1",
+    "fairlearn==0.10.0",
+    "mlflow==2.10.2",
+    "dvc==3.48.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==8.0.2",
+    "black==24.2.0",
+    "isort==5.13.2",
+    "mypy==1.8.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*", "training*", "mlops*", "monitoring*", "bias_audit*", "explainability*"]
+
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
