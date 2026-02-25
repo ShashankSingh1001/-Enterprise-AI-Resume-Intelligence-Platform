@@ -103,6 +103,7 @@ Monitoring & Drift Detection
 
 ## Folder Structure
 
+```PlainText
 resume-intelligence-platform/
 │
 ├── app/
@@ -132,8 +133,7 @@ resume-intelligence-platform/
 ├── docker-compose.yml
 ├── requirements.txt
 └── README.md
-
----
+```
 
 ## Dataset
 
