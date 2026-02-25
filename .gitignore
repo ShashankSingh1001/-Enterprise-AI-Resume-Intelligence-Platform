@@ -40,8 +40,11 @@ models/
 # ===============================
 # Data (handled by DVC)
 # ===============================
-data/raw/*
-data/processed/*
+data/raw/**
+data/processed/**
+
+!data/raw/*.dvc
+!data/processed/*.dvc
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 
