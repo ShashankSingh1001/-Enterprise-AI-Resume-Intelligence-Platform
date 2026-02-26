@@ -1,0 +1,7 @@
+resume_dataset:
+  directory: data/raw/resumes
+  filename: UpdatedResumeDataSet.csv
+
+jd_dataset:
+  directory: data/raw/job_descriptions
+  filename: fake_job_postings.csv
