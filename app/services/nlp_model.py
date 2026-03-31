@@ -1,32 +1,31 @@
 from typing import Any
 
-import spacy
 from loguru import logger
-from spacy.language import Language
+
+from loguru import logger
 
 
 class NLPModel:
-    """Wrapper around spaCy language model."""
+    """spaCy NLP wrapper with lazy loading."""
 
-    def __init__(self, model_name: str = "en_core_web_sm") -> None:
-        """Initialize NLP model."""
+    def __init__(self, model_name: str = "en_core_web_sm"):
         self.model_name = model_name
-        self._nlp: Language = self._load_model()
+        self._nlp = None
 
-    def _load_model(self) -> Language:
-        """Load spaCy model safely."""
-        try:
+    def _load_model(self):
+        """Lazy load spaCy model."""
+        if self._nlp is None:
             logger.info(f"Loading spaCy model: {self.model_name}")
-            nlp = spacy.load(self.model_name)
-            logger.info("spaCy model loaded successfully")
-            return nlp
-        except OSError as e:
-            logger.error(
-                f"spaCy model '{self.model_name}' not found. "
-                "Install it before running NLP features."
-            )
-            raise e
 
-    def process(self, text: str) -> Any:
-        """Process text using spaCy pipeline."""
-        return self._nlp(text)
+            import spacy  # ✅ ONLY place spaCy is imported
+
+            self._nlp = spacy.load(self.model_name)
+
+            logger.info("spaCy model loaded successfully")
+
+        return self._nlp
+
+    def process(self, text: str):
+        """Process text."""
+        nlp = self._load_model()
+        return nlp(text)
