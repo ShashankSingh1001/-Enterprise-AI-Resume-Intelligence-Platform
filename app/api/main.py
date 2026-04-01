@@ -2,7 +2,7 @@ import os
 os.environ["THINC_NO_TORCH"] = "1"
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
 
-from fastapi import FastAPI
+from fastapi import FastAPI,Form
 from pydantic import BaseModel
 from loguru import logger
 import joblib
@@ -98,7 +98,7 @@ def analyze(request: AnalyzeRequest):
 @app.post("/analyze-pdf")
 async def analyze_pdf(
     file: UploadFile = File(...),
-    job_description: str = ""
+    job_description: str = Form(...)
 ):
     """
     Upload PDF resume + JD → get match score
@@ -114,6 +114,9 @@ async def analyze_pdf(
     # Build features
     features = feature_builder.build_features(resume_text, job_description)
     X = np.array([list(features.values())])
+    
+    print("---- DEBUG (FEATURES) ----")
+    print("Feature names:",features)
 
     # Ensemble prediction
     xgb_prob = xgb_model.predict_proba(X)[0][1]
@@ -135,6 +138,11 @@ async def analyze_pdf(
     skills_matched = list(resume_skills & jd_words)
     skills_missing = list(resume_skills - jd_words)
 
+    print("---- DEBUG ----")
+    print("Resume length:", len(resume_text))
+    print("First 200 chars:", resume_text[:200])
+    print("----------------")
+    
     return {
         "match_score": match_score,
         "confidence": round(prob, 4),
